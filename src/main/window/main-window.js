@@ -13,8 +13,8 @@ class MainWindow {
         // const appicon = CommonUtils.icon(64);
         let window = new BrowserWindow({
             height: 700,
-            useContentSize: true,
             width: 1200,
+            useContentSize: true,
             webPreferences: {
                 nodeIntegration: true,
                 nodeIntegrationInWorker: true

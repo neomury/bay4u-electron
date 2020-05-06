@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <transition name="msg-modal">
     <div class="msg-modal-mask">
       <div class="msg-modal-wrapper">

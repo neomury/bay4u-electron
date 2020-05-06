@@ -1,4 +1,4 @@
-import Vue from 'vue'
+/*import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
@@ -14,4 +14,4 @@ export default new Vuex.Store({
         createSharedMutations()
     ],
     strict: process.env.NODE_ENV !== 'production'
-})
+})*/

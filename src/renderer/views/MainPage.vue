@@ -152,6 +152,7 @@ import InfoPage from '@/components/Dealer/InfoPage.vue'
 import MessageBox from '@/components/Common/MessageBox.vue'
 import DealerInfo from '@/components/Common/DealerInfo.vue'
 
+import { ipcRenderer } from 'electron'
 const axios = require('axios').default;
 
 
@@ -347,7 +348,7 @@ export default {
     },
     TEST()
     {
-      ipcRenderer.send("request-message", "world.");
+      ipcRenderer.send("request-message", "This is a Renderer Message.");
 
       /*let el = require('electron').ipcRenderer;
        el.send('ABC',{"a:":"1"});
@@ -392,6 +393,11 @@ export default {
                 userId: this.UserInfo.UserID,
                 bsnId: this.UserInfo.BsnID,      
               });    
+
+    ipcRenderer.on("response-message", (event, args) => {
+        console.log(args);
+        this.responseMessage = args;
+      });
   }
 }
 </script>

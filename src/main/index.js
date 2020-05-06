@@ -18,6 +18,18 @@ function init() {
         mainWindow = null
     })
 
+    /*notiWindow = new BrowserWindow({ width: 210, height: 60, frame: false, type: "notification" });
+    notiWindow.setIgnoreMouseEvents(true);
+    notiWindow.setAlwaysOnTop(true);
+    notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 210, electron.screen.getPrimaryDisplay().bounds.height - 60);
+    notiWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '/'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    notiWindow.isResizable(false);
+    notiWindow.hide();*/
+
     // Renderer 프로세서의 메시지를 수신하고 응답 데이터를 전송합니다.
     ipcMain.on("request-message", (event, args) => {
         console.log(args);

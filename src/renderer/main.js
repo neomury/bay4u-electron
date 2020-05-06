@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import store from './store'
+import { store } from './store/store'
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
 
@@ -14,7 +14,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue from 'bootstrap-vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
-import 'swiper/dist/css/swiper.css'
+import 'swiper/css/swiper.css'
+import './utils/filters';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
     //Vue.http = Vue.prototype.$http = axios

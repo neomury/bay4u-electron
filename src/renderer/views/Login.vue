@@ -200,7 +200,7 @@ export default {
       }
     });*/
     // 이미 로그인이 되어서 캐시에 남아있는 상태면 자동 로그인
-    console.log('Cookie Check : ', this.$cookies.get('BsnID'));
+     console.log('Cookie Check : ', this.$cookies.get('BsnID'));
     if(this.$cookies.get('BsnID') !== "" && this.$cookies.get('BsnID') !== null) {
       var type = this.$cookies.get('UserType');
 
