@@ -12,8 +12,8 @@ class MainWindow {
          */
         // const appicon = CommonUtils.icon(64);
         let window = new BrowserWindow({
-            height: 700,
-            width: 1200,
+            height: 800,
+            width: 1400,
             useContentSize: true,
             webPreferences: {
                 nodeIntegration: true,
@@ -26,7 +26,7 @@ class MainWindow {
             // window.on('closed', () => {
             //   window = null
             // })
-
+        window.webContents.closeDevTools();
         this.mainWindow = window;
     }
 

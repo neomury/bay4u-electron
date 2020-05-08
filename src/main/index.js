@@ -22,32 +22,37 @@ function init() {
     const path = require('path');
     const url = require('url');
 
-    notiWindow = new BrowserWindow({ width: 330, height: 130, frame: false, type: "notification" });
+    notiWindow = new BrowserWindow({ width: 430, height: 230, frame: false, type: "notification", parent: mainWindow });
     notiWindow.setIgnoreMouseEvents(true);
     notiWindow.setAlwaysOnTop(true);
-    notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 250, electron.screen.getPrimaryDisplay().bounds.height - 180);
+    //notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 250, electron.screen.getPrimaryDisplay().bounds.height - 180);
     notiWindow.loadURL(url.format({
-        //pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
+        pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
         //pathname: path.join(__dirname, `../renderer/components/Chat/notification.vue`),
-        pathname: path.join(__dirname, `../renderer/components/Chat/noti.js`),
+        //pathname: path.join(__dirname, `../renderer/components/Chat/noti.js`),
+        // pathname: path.join(__dirname, '../childView/getMsg.html'),
         protocol: 'file:',
         slashes: true
     }));
     notiWindow.isResizable(false);
-    notiWindow.webContents.closeDevTools();
-    notiWindow.hide();
+    //notiWindow.webContents.closeDevTools();
+    //notiWindow.hide();
 
     ipcMain.on('msgReceive', (event, data) => {
-        console.log('msgReceive : ', data);
-        if (mainWindow.isFocused() == false) {
+        console.log('msgReceive : ', data.msg);
+        //notiWindow.webContents.send("requestMsg", data);
+        //mainWindow.webContents.send("requestMsg", "TEST : " + data.msg);
+        //event.sender.send("response-message", "TEST : " + data.msg);
+        /*if (mainWindow.isFocused() == false) {
             //notiWindow.reload();
             //notiWindow.webContents.once('did-finish-load', () => {
-            notiWindow.webContents.send("requestMsg", data);
-            //event.sender.send("requestMsg", data);
+            //notiWindow.webContents.send("requestMsg", data);
+
+
             notiWindow.show();
             //});
             //child.webContents.send("requestMsg",data);
-        }
+        }*/
     });
 
     ipcMain.on('hideChild', (event, data) => {
@@ -89,7 +94,7 @@ function createTray() {
 
 app.on('ready', () => {
         init()
-        createTray()
+            //createTray()
     }) // <-- createWindow -> init으로 수정
 
 app.on('window-all-closed', () => {

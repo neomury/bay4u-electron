@@ -81,6 +81,7 @@ import Constant from '@/Constant';
 import MessageList from '@/components/Chat/ChatMessageList.vue';
 import MessageForm from '@/components/Chat/ChatMessageForm.vue';
 import {datePadding, convertStringToDynamo, dataURItoBlob} from '@/utils/common.js'
+import { ipcRenderer } from 'electron'
 
 export default {
   name: 'ChatingPage',
@@ -123,6 +124,11 @@ export default {
     
   },
   created : function() {
+    /*ipcRenderer.on("response-message", (event, args) => {
+        console.log(args);
+  
+      });*/
+
     if(this.$route.params.chatid !== undefined) {
       this.showMainPage = false;
       this.showChatPage = true;
@@ -235,6 +241,7 @@ export default {
         }
       }
       //this.$EventBus.$emit('UserListPage.TopMoveChat', data);  
+      ipcRenderer.send('msgReceive', data);
     });
 
     this.$EventBus.$on('click-qtInfo', chatItem => {  

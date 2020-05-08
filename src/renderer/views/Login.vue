@@ -155,10 +155,10 @@ export default {
             this.UserInfo.Name = name;
             this.UserInfo.UserType = type;
 
-            var url = Constant.MESSAGE_POPUP + "bsnId=" + this.UserInfo.BsnID + "&userId=" + this.UserInfo.UserID;
+           /* var url = Constant.MESSAGE_POPUP + "bsnId=" + this.UserInfo.BsnID + "&userId=" + this.UserInfo.UserID;
             var title = "메시지 알림 서비스 설치";
             var option = "width = 500, height = 500, top = 100, left = 200, location = no"
-            window.open(url, title, option);
+            window.open(url, title, option);*/
           }
 
           if(mode !== undefined){
@@ -208,10 +208,10 @@ export default {
         this.$router.push('/NewQT');
       }
       else if(type === "DEALER" || type === "DEALER2") {
-        var url = Constant.MESSAGE_POPUP + "bsnId=" + this.UserInfo.BsnID + "&userId=" + this.UserInfo.UserID;
+        /*var url = Constant.MESSAGE_POPUP + "bsnId=" + this.UserInfo.BsnID + "&userId=" + this.UserInfo.UserID;
         var title = "메시지 알림 서비스 설치";
         var option = "width = 500, height = 500, top = 100, left = 200, location = no"
-        window.open(url, title, option);        
+        window.open(url, title, option); */       
 
         this.$router.push('/MainPage');
       }

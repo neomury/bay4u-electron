@@ -398,6 +398,12 @@ export default {
         console.log(args);
         this.responseMessage = args;
       });
+
+    ipcRenderer.on("requestMsg", (event, args) => {
+        console.log("requestMsg :" ,args);
+        this.responseMessage = args;
+      });
+      
   }
 }
 </script>
