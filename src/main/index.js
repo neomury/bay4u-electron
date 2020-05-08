@@ -1,4 +1,5 @@
-import { app, Tray, Menu, ipcMain } from 'electron'
+import electron from 'electron'
+import { app, Tray, Menu, ipcMain, BrowserWindow } from 'electron'
 import MainWindow from './window/main-window'
 
 /**
@@ -10,6 +11,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow = null;
+let notiWindow = null;
 
 function init() {
 
@@ -17,18 +19,40 @@ function init() {
     mainWindow.on('closed', () => { // <-- 창닫기 이벤트 처리
         mainWindow = null
     })
+    const path = require('path');
+    const url = require('url');
 
-    /*notiWindow = new BrowserWindow({ width: 210, height: 60, frame: false, type: "notification" });
+    notiWindow = new BrowserWindow({ width: 330, height: 130, frame: false, type: "notification" });
     notiWindow.setIgnoreMouseEvents(true);
     notiWindow.setAlwaysOnTop(true);
-    notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 210, electron.screen.getPrimaryDisplay().bounds.height - 60);
+    notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 250, electron.screen.getPrimaryDisplay().bounds.height - 180);
     notiWindow.loadURL(url.format({
-        pathname: path.join(__dirname, '/'),
+        //pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
+        //pathname: path.join(__dirname, `../renderer/components/Chat/notification.vue`),
+        pathname: path.join(__dirname, `../renderer/components/Chat/noti.js`),
         protocol: 'file:',
         slashes: true
     }));
     notiWindow.isResizable(false);
-    notiWindow.hide();*/
+    notiWindow.webContents.closeDevTools();
+    notiWindow.hide();
+
+    ipcMain.on('msgReceive', (event, data) => {
+        console.log('msgReceive : ', data);
+        if (mainWindow.isFocused() == false) {
+            //notiWindow.reload();
+            //notiWindow.webContents.once('did-finish-load', () => {
+            notiWindow.webContents.send("requestMsg", data);
+            //event.sender.send("requestMsg", data);
+            notiWindow.show();
+            //});
+            //child.webContents.send("requestMsg",data);
+        }
+    });
+
+    ipcMain.on('hideChild', (event, data) => {
+        child.hide();
+    });
 
     // Renderer 프로세서의 메시지를 수신하고 응답 데이터를 전송합니다.
     ipcMain.on("request-message", (event, args) => {
@@ -71,6 +95,7 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
+        app.exit();
     }
 })
 
