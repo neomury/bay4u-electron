@@ -13,20 +13,21 @@ class MainWindow {
         // const appicon = CommonUtils.icon(64);
         let window = new BrowserWindow({
             height: 800,
-            width: 1400,
+            width: 1600,
             useContentSize: true,
             webPreferences: {
                 nodeIntegration: true,
-                nodeIntegrationInWorker: true
+                nodeIntegrationInWorker: true,
+                backgroundThrottling: false
             },
             //   icon: appicon,
         })
-
         window.loadURL(winURL)
             // window.on('closed', () => {
             //   window = null
             // })
-        window.webContents.closeDevTools();
+            //window.webContents.closeDevTools();
+            //window.removeMenu();
         this.mainWindow = window;
     }
 

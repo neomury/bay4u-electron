@@ -275,6 +275,7 @@ import {datePadding} from '@/utils/common.js'
 import Constant from '@/Constant';
 import {arrayGroupBy} from '@/utils/common.js'
 import MessageBox from '@/components/Common/MessageBox.vue'
+import { ipcRenderer } from 'electron'
 
 const axios = require('axios').default;
 
@@ -1682,6 +1683,14 @@ export default {
     this.$EventBus.$on('UserListPage.TopMoveChat', data => {  
       this.TopMoveChat(data);
     });
+
+    ipcRenderer.on("response-chat", (event, args) => {
+        console.log("response-chat :", args);
+        if(args.sameChat !== true){
+          this.targetQtId = args.docId;
+          this.showQtInfo(this.targetQtId);
+        }
+      });
   },    
   computed:{
     UserInfo: {

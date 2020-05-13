@@ -124,11 +124,6 @@ export default {
     
   },
   created : function() {
-    /*ipcRenderer.on("response-message", (event, args) => {
-        console.log(args);
-  
-      });*/
-
     if(this.$route.params.chatid !== undefined) {
       this.showMainPage = false;
       this.showChatPage = true;
@@ -171,7 +166,10 @@ export default {
         }
       } 
        
+      var isSameChat = false; // 같은채팅 여부
+      
       if(this.chatItem.ID === data.docId) {        
+        isSameChat = true;
         var chatMsg = {};
         chatMsg.from = {'name' : data.from.name};
         chatMsg.to = {'name' : data.to.name};
@@ -241,7 +239,9 @@ export default {
         }
       }
       //this.$EventBus.$emit('UserListPage.TopMoveChat', data);  
+      data.sameChat = isSameChat;
       ipcRenderer.send('msgReceive', data);
+
     });
 
     this.$EventBus.$on('click-qtInfo', chatItem => {  

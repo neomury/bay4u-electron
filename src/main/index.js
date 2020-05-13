@@ -6,63 +6,85 @@ import MainWindow from './window/main-window'
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-if (process.env.NODE_ENV !== 'development') {
+/*if (process.env.NODE_ENV !== 'development') {
     global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
-}
+}*/
 
 let mainWindow = null;
 let notiWindow = null;
+let chaMsgList = [];
 
 function init() {
 
     mainWindow = MainWindow.create(); // <-- 윈도우 생성하기
+    mainWindow.maximize(); // 전체화면 
     mainWindow.on('closed', () => { // <-- 창닫기 이벤트 처리
-        mainWindow = null
+        mainWindow = null;
+        notiWindow.close();
     })
     const path = require('path');
     const url = require('url');
 
-    notiWindow = new BrowserWindow({ width: 430, height: 230, frame: false, type: "notification", parent: mainWindow });
-    notiWindow.setIgnoreMouseEvents(true);
+    notiWindow = new BrowserWindow({
+        width: 320,
+        height: 90,
+        frame: false,
+        type: "notification",
+        //resizable: false,
+        //parent: mainWindow,
+        webPreferences: {
+            nodeIntegration: true,
+            nodeIntegrationInWorker: true,
+            // devTools: false
+        }
+    });
+    //notiWindow.setIgnoreMouseEvents(true);
     notiWindow.setAlwaysOnTop(true);
-    //notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 250, electron.screen.getPrimaryDisplay().bounds.height - 180);
+    notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 340, electron.screen.getPrimaryDisplay().bounds.height - 150);
     notiWindow.loadURL(url.format({
         pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
-        //pathname: path.join(__dirname, `../renderer/components/Chat/notification.vue`),
-        //pathname: path.join(__dirname, `../renderer/components/Chat/noti.js`),
-        // pathname: path.join(__dirname, '../childView/getMsg.html'),
         protocol: 'file:',
         slashes: true
     }));
-    notiWindow.isResizable(false);
     //notiWindow.webContents.closeDevTools();
+    //notiWindow.setOpacity(0);
     //notiWindow.hide();
 
     ipcMain.on('msgReceive', (event, data) => {
-        console.log('msgReceive : ', data.msg);
-        //notiWindow.webContents.send("requestMsg", data);
-        //mainWindow.webContents.send("requestMsg", "TEST : " + data.msg);
+        console.log('msgReceive : ', data);
         //event.sender.send("response-message", "TEST : " + data.msg);
-        /*if (mainWindow.isFocused() == false) {
-            //notiWindow.reload();
-            //notiWindow.webContents.once('did-finish-load', () => {
-            //notiWindow.webContents.send("requestMsg", data);
-
-
-            notiWindow.show();
-            //});
-            //child.webContents.send("requestMsg",data);
-        }*/
+        if (mainWindow.isFocused() == false) {
+            chaMsgList.push(data);
+            notiWindow.reload();
+            notiWindow.webContents.once('did-finish-load', () => {
+                chaMsgList.sort(function(a, b) {
+                    return (a.ReqSeq < b.ReqSeq) ? 1 : -1;
+                });
+                notiWindow.webContents.send("requestMsg", chaMsgList);
+                //notiWindow.show();
+            });
+        }
     });
 
     ipcMain.on('hideChild', (event, data) => {
-        child.hide();
+        //console.log('data:', data);
+        if (data !== null) {
+            if (mainWindow.isFocused() == false) {
+                mainWindow.setFocusable(true);
+                mainWindow.maximize();
+                mainWindow.show();
+            }
+            mainWindow.webContents.send("response-chat", data);
+        }
+        //notiWindow.hide();
+        chaMsgList = [];
     });
 
     // Renderer 프로세서의 메시지를 수신하고 응답 데이터를 전송합니다.
     ipcMain.on("request-message", (event, args) => {
         console.log(args);
-        event.sender.send("response-message", "This is a Server Message.");
+        //event.sender.send("response-message", "This is a Server Message.");
+        mainWindow.webContents.send("response-message", "This is a Server Message.");
     });
 }
 

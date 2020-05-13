@@ -21,7 +21,12 @@ const routes = [{
         path: '/MainPage',
         name: 'MainPage',
         component: MainPage
+    },
+    {
+        path: '*',
+        redirect: '/'
     }
+
 ]
 
 const router = new VueRouter({
