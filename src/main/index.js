@@ -6,9 +6,6 @@ import MainWindow from './window/main-window'
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-/*if (process.env.NODE_ENV !== 'development') {
-    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
-}*/
 
 let mainWindow = null;
 let notiWindow = null;
@@ -24,35 +21,42 @@ function init() {
     })
     const path = require('path');
     const url = require('url');
+    const notiWinURL = process.env.NODE_ENV === 'development' ?
+        path.join(__dirname, `../renderer/notification/notificationView.html`) :
+        `file://${__dirname}/notificationView.html`;
 
     notiWindow = new BrowserWindow({
         width: 320,
         height: 90,
         frame: false,
         type: "notification",
-        //resizable: false,
-        //parent: mainWindow,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true,
             nodeIntegrationInWorker: true,
-            // devTools: false
+            devTools: false
         }
     });
     //notiWindow.setIgnoreMouseEvents(true);
     notiWindow.setAlwaysOnTop(true);
     notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 340, electron.screen.getPrimaryDisplay().bounds.height - 150);
-    notiWindow.loadURL(url.format({
-        pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
-        protocol: 'file:',
-        slashes: true
-    }));
-    //notiWindow.webContents.closeDevTools();
-    //notiWindow.setOpacity(0);
-    //notiWindow.hide();
+
+    if (process.env.NODE_ENV === 'development') {
+        notiWindow.loadURL(url.format({
+            pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
+            protocol: 'file:',
+            slashes: true
+        }));
+    } else {
+        notiWindow.loadURL(`file://${__dirname}/notificationView.html`);
+    }
+
+    notiWindow.webContents.closeDevTools();
+    notiWindow.setOpacity(0);
+    notiWindow.hide();
 
     ipcMain.on('msgReceive', (event, data) => {
         console.log('msgReceive : ', data);
-        //event.sender.send("response-message", "TEST : " + data.msg);
         if (mainWindow.isFocused() == false) {
             chaMsgList.push(data);
             notiWindow.reload();
@@ -67,7 +71,6 @@ function init() {
     });
 
     ipcMain.on('hideChild', (event, data) => {
-        //console.log('data:', data);
         if (data !== null) {
             if (mainWindow.isFocused() == false) {
                 mainWindow.setFocusable(true);
@@ -83,8 +86,8 @@ function init() {
     // Renderer 프로세서의 메시지를 수신하고 응답 데이터를 전송합니다.
     ipcMain.on("request-message", (event, args) => {
         console.log(args);
-        //event.sender.send("response-message", "This is a Server Message.");
-        mainWindow.webContents.send("response-message", "This is a Server Message.");
+        event.sender.send("response-message", "This is a Server Message.");
+        //mainWindow.webContents.send("response-message", "This is a Server Message.");
     });
 }
 

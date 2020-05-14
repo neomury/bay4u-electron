@@ -1,7 +1,6 @@
 const { ipcRenderer } = require('electron');
-//import { ipcRenderer } from 'electron'
+
 ipcRenderer.on("requestMsg", function(event, data) {
-    alert("requestMsg start");
     console.log("msgReceive : ", data);
 
     var chatDataList = data;

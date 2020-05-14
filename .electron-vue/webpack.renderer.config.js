@@ -24,7 +24,8 @@ let whiteListedModules = ['vue', 'vuetify', 'bootstrap-vue']
 let rendererConfig = {
     devtool: '#cheap-module-eval-source-map',
     entry: {
-        renderer: path.join(__dirname, '../src/renderer/main.js')
+        renderer: path.join(__dirname, '../src/renderer/main.js'),
+        notification: path.join(__dirname, '../src/renderer/notification/notification.js')
     },
     externals: [
         ...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d))
@@ -112,7 +113,32 @@ let rendererConfig = {
         new MiniCssExtractPlugin({ filename: 'styles.css' }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
+            excludeChunks: ['notification'],
             template: path.resolve(__dirname, '../src/index.ejs'),
+            templateParameters(compilation, assets, options) {
+                return {
+                    compilation: compilation,
+                    webpack: compilation.getStats().toJson(),
+                    webpackConfig: compilation.options,
+                    htmlWebpackPlugin: {
+                        files: assets,
+                        options: options
+                    },
+                    process,
+                };
+            },
+            minify: {
+                collapseWhitespace: true,
+                removeAttributeQuotes: true,
+                removeComments: true
+            },
+            nodeModules: process.env.NODE_ENV !== 'production' ?
+                path.resolve(__dirname, '../node_modules') : false
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'notificationView.html',
+            chunks: ['notification'], // entry에서 해당 리스트만 포함
+            template: path.resolve(__dirname, '../src/notificationView.ejs'),
             templateParameters(compilation, assets, options) {
                 return {
                     compilation: compilation,

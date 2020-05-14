@@ -1,0 +1,83 @@
+html,
+body {
+    overflow: hidden;
+    margin: 0px;
+}
+
+#msgBox {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    height: 90px;
+    padding: 0px;
+    /*border-radius: 4px 4px 0px 0px;*/
+    background: #000;
+    border-top: solid 3px #DF4F3D;
+}
+
+#popupInfo {
+    display: flex;
+    text-align: center;
+    font-size: 1em;
+    color: #FFF;
+    margin: auto;
+    padding: 5px;
+    /*background: #3E2723;
+    border-radius: 4px 4px 0px 0px;*/
+}
+
+#popupMsg {
+    width: 100%;
+    font-size: 0.9em;
+    font-weight: bold;
+    background-color: #fff;
+}
+
+#moveqt {
+    height: 30px;
+    width: 100%;
+    border-top: solid 1px #BCAAA4;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #01579B;
+    background-color: #fff;
+}
+
+.close {
+    width: 15px;
+    position: absolute;
+    right: 0;
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+.sendName {
+    font-weight: bold;
+    /*color: #FFAB00;*/
+    color: #FDBA6D;
+    margin-right: 1px;
+}
+
+.msg {
+    /*background: rgba(216, 216, 216, 0.144);*/
+    border-radius: 10px;
+    width: fit-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    max-width: 250px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: auto;
+}
+
+.link-qt {
+    width: fit-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    max-width: 250px;
+    margin: auto;
+    cursor: pointer;
+}

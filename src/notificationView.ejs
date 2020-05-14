@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/icons/favicon-16x16.png">
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.publicPath %>static/notification.css">
+    <% if (htmlWebpackPlugin.options.nodeModules) { %>
+        <script>
+            require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, "\\\\") %>')
+        </script>
+        <% } %>
+</head>
+
+<body>
+    <div id="msgBox">
+        <div id="popupInfo"></div>
+        <div id="popupMsg"></div>
+        <div id="moveqt"></div>
+    </div>
+    <% if (!process.browser) { %>
+        <script>
+            if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+        </script>
+        <% } %>
+</body>
+
+</html>

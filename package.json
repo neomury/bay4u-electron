@@ -1,6 +1,6 @@
 {
     "name": "electron-bay4u",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "vue electron",
     "author": "",
     "scripts": {
@@ -84,7 +84,7 @@
         "webpack-merge": "^4.1.3"
     },
     "build": {
-        "productName": "electron-bay4u",
+        "productName": "bay4u",
         "appId": "bay4u.electron",
         "asar": true,
         "directories": {
@@ -111,7 +111,7 @@
             "icon": "build/icons/icon.icns"
         },
         "win": {
-            "icon": "build/icons/icon.ico"
+            "icon": "./static/bay4u.ico"
         },
         "linux": {
             "icon": "build/icons"

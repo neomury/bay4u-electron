@@ -19,14 +19,14 @@
             {{mode}}
             </v-chip>
           </span>
-          <v-btn id="testBtn" @click="TEST">TEST</v-btn>
+          <!--<v-btn id="testBtn" @click="TEST">TEST</v-btn>-->
         </div>
         <!--<h4>수입차 부품 견적 시스템<img height = "25px" src="@/assets/logo.png"></h4>-->
       </v-toolbar-title>
 
       <v-spacer></v-spacer>       
       <div class="page-top">
-        <div class="download">
+        <!--<div class="download">
           <v-btn color="#546E7A" dark depressed small @click="chromeStore" class="mr-2">
           chrome 웹 스토어
           <v-icon right dark size="20px" small>system_update_alt</v-icon>
@@ -36,7 +36,7 @@
           채팅알림 다운로드
           <v-icon right dark size="20px" small>system_update_alt</v-icon>
           </v-btn>
-        </div>
+        </div>-->
         <div class="logout">
           <!--<CheckLogin></CheckLogin>-->
           <v-btn color="#90A4AE" dark depressed small @click="logOut">
