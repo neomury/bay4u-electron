@@ -1,7 +1,7 @@
 {
     "name": "electron-bay4u",
     "version": "1.0.0",
-    "description": "vue electron",
+    "description": "bay4u",
     "author": "",
     "scripts": {
         "build": "node .electron-vue/build.js && electron-builder",
@@ -16,7 +16,8 @@
         "pack": "npm run pack:main && npm run pack:renderer",
         "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
         "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-        "postinstall": ""
+        "postinstall": "",
+        "publish": "node .electron-vue/build.js && cross-env GH_TOKEN=[9ab791caa8ff16be50d4612ddbd88e6d0c81c356] electron-builder --publish always"
     },
     "main": "./dist/electron/main.js",
     "dependencies": {
@@ -84,8 +85,13 @@
         "webpack-merge": "^4.1.3"
     },
     "build": {
-        "productName": "bay4u",
+        "productName": "bay4u_dev",
         "appId": "bay4u.electron",
+        "publish": {
+            "provider": "github",
+            "owner": "neomury",
+            "repo": "bay4u-electron"
+        },
         "asar": true,
         "directories": {
             "output": "build"
@@ -126,5 +132,5 @@
             "language": "1042"
         }
     },
-    "license": null
+    "license": ""
 }

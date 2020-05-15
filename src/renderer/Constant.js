@@ -13,8 +13,8 @@ export default {
     JSON_HEADER: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     AIBRIL_HEADER: { 'api-key': 'f6fa3334-b9e0-4cdd-bd4c-bce5871eff8c', 'Content-Type': 'application/json' },
     IMGUPLOAD_URL: 'https://dsm45brsm5.execute-api.ap-northeast-2.amazonaws.com/default/imgUploadTest',
-    IMGUPLOAD_HEADER: {'x-api-key': 'XbQmTVrXgo1obsXV6eMpO689ZGFkWzjK6Zzu2YeK', 'Content-Type': 'application/json'},
-    IMG_URL: 'https://s3.ap-northeast-2.amazonaws.com/img.bay4u.co.kr/' ,
+    IMGUPLOAD_HEADER: { 'x-api-key': 'XbQmTVrXgo1obsXV6eMpO689ZGFkWzjK6Zzu2YeK', 'Content-Type': 'application/json' },
+    IMG_URL: 'https://s3.ap-northeast-2.amazonaws.com/img.bay4u.co.kr/',
     MESSAGE_POPUP: 'https://bay4u.co.kr/deploy/Bay4u.application?'*/
 
     /* 개발계*/
