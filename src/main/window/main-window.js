@@ -26,8 +26,23 @@ class MainWindow {
             // window.on('closed', () => {
             //   window = null
             // })
-        window.webContents.closeDevTools();
-        window.removeMenu();
+            //window.webContents.closeDevTools();
+            //window.removeMenu();
+
+        // 최소화 시 메인창 히든처리
+        window.on('minimize', (event) => {
+            event.preventDefault();
+            window.hide();
+            event.returnValue = false;
+        });
+
+        // 닫기 시 메인창 히든 처리
+        window.on('close', (event) => {
+            event.preventDefault();
+            window.hide();
+            event.returnValue = false;
+        });
+
         this.mainWindow = window;
     }
 

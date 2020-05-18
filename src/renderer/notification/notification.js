@@ -103,7 +103,6 @@ function arrayGroupBy(array, f) {
     })
 }
 
-
 const remote = require('electron').remote
 
 const fadeWindowOut = (

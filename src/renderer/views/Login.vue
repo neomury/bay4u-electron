@@ -7,6 +7,11 @@
       <div class="login-logo">
         <img src="@/assets/logo.png">
       </div>
+      <AppUpdateer
+      :auto-check="preferences.update.autoCheck"
+    :auto-download="preferences.update.autoDownload"
+    :auto-install="preferences.update.autoInstall"
+    v-if="preferences.update.autoUpdateUI"></AppUpdateer>
       <br>
         <v-alert
           v-model="loginAlert"
@@ -56,15 +61,28 @@
 <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
 <script>
 import Constant from '../Constant';
+import AppUpdateer from '@/components/Common/AppUpdate.vue'
+
 const axios = require('axios').default;
 export default {
   name: 'Login',
+  components:{
+    AppUpdateer
+  },
   data () {
     return {
       id: '',
       pwd: '',
       loginAlert: false,
-      loginAlertMessage: ''
+      loginAlertMessage: '',
+      preferences: {
+        update:{
+          autoUpdateUI: true,
+          autoCheck: false,
+          autoDownload: false,
+          autoInstall: false,
+        }
+      },
     }
   },
   methods: {

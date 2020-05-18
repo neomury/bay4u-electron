@@ -1,0 +1,4 @@
+provider: github
+owner: neomury
+repo: bay4u-electron
+updaterCacheDirName: electron-bay4u

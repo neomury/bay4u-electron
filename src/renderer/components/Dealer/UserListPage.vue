@@ -874,6 +874,7 @@ export default {
           }
         }
       }
+      ipcRenderer.send('hideChild', null);
     },
     saveChatState(item)
     {

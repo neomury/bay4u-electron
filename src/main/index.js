@@ -1,6 +1,11 @@
 import electron from 'electron'
 import { app, Tray, Menu, ipcMain, BrowserWindow } from 'electron'
 import MainWindow from './window/main-window'
+//import NotiWindow from './window/noti-window'
+import AppUpdater from './shared/appUpdate';
+import createMainMenu from './window/main-menu'
+import SystemTray from './window/tray-component'
+//import colors from 'vuetify/lib/util/colors';
 
 /**
  * Set `__static` path to static files in production
@@ -18,7 +23,24 @@ function init() {
     mainWindow.on('closed', () => { // <-- 창닫기 이벤트 처리
         mainWindow = null;
         notiWindow.close();
-    })
+    });
+
+    mainWindow.on('maximize', (event) => {
+        if (notiWindow.isVisible() === true) {
+            notiWindow.hide();
+            chaMsgList = [];
+        }
+    });
+
+    // 메인 메뉴 생성하기
+    createMainMenu(mainWindow);
+
+    // 시스템 트레이 생성하기
+    SystemTray.init(mainWindow);
+
+    // 알림창 생성
+    //notiWindow = NotiWindow.create();
+
     const path = require('path');
     const url = require('url');
     const notiWinURL = process.env.NODE_ENV === 'development' ?
@@ -55,8 +77,10 @@ function init() {
     notiWindow.setOpacity(0);
     notiWindow.hide();
 
+
     ipcMain.on('msgReceive', (event, data) => {
         console.log('msgReceive : ', data);
+        //console.log('isVisible : ', mainWindow.isVisible());
         if (mainWindow.isFocused() == false) {
             chaMsgList.push(data);
             notiWindow.reload();
@@ -68,6 +92,7 @@ function init() {
                 //notiWindow.show();
             });
         }
+
     });
 
     ipcMain.on('hideChild', (event, data) => {
@@ -78,8 +103,9 @@ function init() {
                 mainWindow.show();
             }
             mainWindow.webContents.send("response-chat", data);
+        } else {
+            notiWindow.hide();
         }
-        //notiWindow.hide();
         chaMsgList = [];
     });
 
@@ -89,38 +115,14 @@ function init() {
         event.sender.send("response-message", "This is a Server Message.");
         //mainWindow.webContents.send("response-message", "This is a Server Message.");
     });
-}
 
-function createTray() {
-
-    //메인 BrowserWindow에서 닫기를 누를시 히든처리가 선행되어야함.
-    mainWindow.on('close', (event) => {
-        event.preventDefault();
-        mainWindow.hide();
-    });
-    // 현재 애플리케이션 디렉터리를 기준으로 하려면 `__dirname + '/images/tray.png'` 형식으로 입력해야 합니다.
-    const tray = new Tray(__dirname + '/images/car.png');
-    tray.on('click', () => {
-        //mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-        mainWindow.show();
-    })
-    var contextMenu = Menu.buildFromTemplate([{
-        label: `v${app.getVersion()}`
-    }, {
-        label: 'Close',
-        click: function() {
-            mainWindow.close();
-            app.quit();
-            app.exit();
-        }
-    }])
-    tray.setContextMenu(contextMenu)
+    // 업데이트 처리
+    AppUpdater.init(mainWindow);
 }
 
 app.on('ready', () => {
-        init()
-            //createTray()
-    }) // <-- createWindow -> init으로 수정
+    init()
+})
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -131,7 +133,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (mainWindow === null) {
-        init() // <-- createWindow -> init으로 수정
+        init();
     }
 })
 
