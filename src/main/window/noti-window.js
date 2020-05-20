@@ -43,6 +43,10 @@ class NotiWindow {
         window.setOpacity(0);
         window.hide();
 
+        window.on('show', (event) => {
+            window.flashFrame(true);
+        });
+
         this.notiWindow = window;
     }
 

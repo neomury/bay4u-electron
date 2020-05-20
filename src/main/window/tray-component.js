@@ -1,4 +1,4 @@
-import { app, Tray, Menu } from 'electron';
+import { app, Tray, Menu, nativeImage } from 'electron';
 import CommonUtils from "../shared/common-utils";
 
 let tray;
@@ -6,10 +6,16 @@ export default (() => {
     class TrayManager {
         constructor(win) {
             this.win = win;
+            const path = require("path");
 
-            const trayicon = CommonUtils.icon(16);
+            if (process.env.NODE_ENV === 'development') {
+                const trayicon = CommonUtils.icon(16);
+                tray = new Tray(trayicon);
+            } else {
+                const iconPath = path.join(__dirname, 'static/bay4u.png');
+                tray = new Tray(nativeImage.createFromPath(iconPath));
+            }
 
-            tray = new Tray(trayicon);
             const menu = Menu.buildFromTemplate([
                 /* {
                                            label: "bay4u 보기",

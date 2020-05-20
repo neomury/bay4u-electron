@@ -1,10 +1,12 @@
 import electron from 'electron'
-import { app, Tray, Menu, ipcMain, BrowserWindow } from 'electron'
+import { app, ipcMain } from 'electron'
 import MainWindow from './window/main-window'
-//import NotiWindow from './window/noti-window'
+import NotiWindow from './window/noti-window'
 import AppUpdater from './shared/appUpdate';
 import createMainMenu from './window/main-menu'
 import SystemTray from './window/tray-component'
+import CommonUtils from "./shared/common-utils";
+//import { autoUpdater } from 'electron-updater'
 //import colors from 'vuetify/lib/util/colors';
 
 /**
@@ -39,43 +41,30 @@ function init() {
     SystemTray.init(mainWindow);
 
     // 알림창 생성
-    //notiWindow = NotiWindow.create();
+    notiWindow = NotiWindow.create();
 
-    const path = require('path');
-    const url = require('url');
-    const notiWinURL = process.env.NODE_ENV === 'development' ?
-        path.join(__dirname, `../renderer/notification/notificationView.html`) :
-        `file://${__dirname}/notificationView.html`;
+    // 알림창 최소화 시 최근 채팅으로 이동
+    notiWindow.on('minimize', (event) => {
+        if (mainWindow.isFocused() == false) {
+            var list = CommonUtils.arrayGroupBy(chaMsgList, function(item) {
+                return [item.docId];
+            });
 
-    notiWindow = new BrowserWindow({
-        width: 320,
-        height: 90,
-        frame: false,
-        type: "notification",
-        resizable: false,
-        webPreferences: {
-            nodeIntegration: true,
-            nodeIntegrationInWorker: true,
-            devTools: false
+            var chatItem = list[0];
+            if (list.length > 1) {
+                chatItem = chatItem[0];
+            } else {
+                chatItem = chaMsgList[0];
+            }
+
+            mainWindow.setFocusable(true);
+            mainWindow.maximize();
+            mainWindow.show();
+            mainWindow.webContents.send("response-chat", chatItem);
+            notiWindow.hide();
+            chaMsgList = [];
         }
     });
-    //notiWindow.setIgnoreMouseEvents(true);
-    notiWindow.setAlwaysOnTop(true);
-    notiWindow.setPosition(electron.screen.getPrimaryDisplay().bounds.width - 340, electron.screen.getPrimaryDisplay().bounds.height - 150);
-
-    if (process.env.NODE_ENV === 'development') {
-        notiWindow.loadURL(url.format({
-            pathname: path.join(__dirname, `../renderer/notification/notificationView.html`),
-            protocol: 'file:',
-            slashes: true
-        }));
-    } else {
-        notiWindow.loadURL(`file://${__dirname}/notificationView.html`);
-    }
-
-    notiWindow.webContents.closeDevTools();
-    notiWindow.setOpacity(0);
-    notiWindow.hide();
 
 
     ipcMain.on('msgReceive', (event, data) => {
@@ -118,7 +107,13 @@ function init() {
 
     // 업데이트 처리
     AppUpdater.init(mainWindow);
+    //if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates();
+    //autoUpdater.checkForUpdates();
 }
+/*autoUpdater.on('update-downloaded', () => {
+    console.log('update-downloaded')
+    autoUpdater.quitAndInstall()
+})*/
 
 app.on('ready', () => {
     init()

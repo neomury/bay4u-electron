@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import CommonUtils from "../shared/common-utils";
 
 const winURL = process.env.NODE_ENV === 'development' ?
@@ -11,6 +11,8 @@ class MainWindow {
          * Initial window options
          */
         const appicon = CommonUtils.icon(64);
+        const appVersion = app.getVersion();
+
         let window = new BrowserWindow({
             height: 800,
             width: 1600,
@@ -21,6 +23,7 @@ class MainWindow {
                 backgroundThrottling: false
             },
             icon: appicon,
+            title: "수입부품 견적 시스템(" + appVersion + ")"
         })
         window.loadURL(winURL)
             // window.on('closed', () => {
@@ -34,6 +37,10 @@ class MainWindow {
             event.preventDefault();
             window.hide();
             event.returnValue = false;
+        });
+
+        window.on('page-title-updated', (evt) => {
+            evt.preventDefault();
         });
 
         // 닫기 시 메인창 히든 처리

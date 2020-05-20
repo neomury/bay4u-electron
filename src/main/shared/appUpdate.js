@@ -1,7 +1,8 @@
 import { ipcMain, app } from 'electron'
 import { autoUpdater, UpdateInfo, VersionInfo, UpdateCheckResult } from "electron-updater"
-
 const path = require("path");
+const log = require("electron-log");
+
 if (process.env.NODE_ENV !== 'production') {
 
     //개발환경일경우 설정파일이 없어서 오류 index.js와 같은 폴더에 앱업데이트 설정을 넣어둬 해결
@@ -13,7 +14,6 @@ export default (() => {
         constructor(window) {
             this.window = window;
 
-            const log = require("electron-log")
             log.transports.file.level = "debug"
 
             autoUpdater.logger = log
@@ -30,10 +30,10 @@ export default (() => {
         bindEvents() {
             // 사용자가 업데이트 확인을 요청했을 경우
             ipcMain.on("update-check-now", (event, data) => {
-                console.log("update-check-now..................." + JSON.stringify(data))
+                log.info("update-check-now..................." + JSON.stringify(data))
                 let { download } = data;
                 download = (typeof download === "undefined") ? true : download;
-                console.log("update-check-now..................." + download)
+                log.info("update-check-now..................." + download)
                 autoUpdater.autoDownload = download;
                 // try {
                 autoUpdater.checkForUpdates();

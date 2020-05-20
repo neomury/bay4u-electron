@@ -62,6 +62,7 @@
 <script>
 import Constant from '../Constant';
 import AppUpdateer from '@/components/Common/AppUpdate.vue'
+const log = require("electron-log");
 
 const axios = require('axios').default;
 export default {
@@ -219,6 +220,7 @@ export default {
     });*/
     // 이미 로그인이 되어서 캐시에 남아있는 상태면 자동 로그인
      console.log('Cookie Check : ', this.$cookies.get('BsnID'));
+     log.info('Cookie Check :', this.$cookies.get('BsnID'));
     if(this.$cookies.get('BsnID') !== "" && this.$cookies.get('BsnID') !== null) {
       var type = this.$cookies.get('UserType');
 

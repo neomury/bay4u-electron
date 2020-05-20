@@ -92,6 +92,8 @@ export default {
   },
   mounted() {
     ipcRenderer.on("updater-message", (event, args) => {
+      const log = require("electron-log");
+      log.info("updater-message : ",args);
       // console.log("updater-message");
       console.log(args);
       switch(args.type) {
@@ -109,7 +111,7 @@ export default {
           }, 3000);
           break;
         case "update-available":
-          const {releaseName} = args.info;
+          const releaseName = args.info.version;
           this.updateStateMessage = "서버에서 신규 버전(" + releaseName + ")을 찾았습니다.";
           this.updateStep = 2;
           this.updateToastNoClose = false;
