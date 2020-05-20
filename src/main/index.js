@@ -6,7 +6,7 @@ import AppUpdater from './shared/appUpdate';
 import createMainMenu from './window/main-menu'
 import SystemTray from './window/tray-component'
 import CommonUtils from "./shared/common-utils";
-//import { autoUpdater } from 'electron-updater'
+import { autoUpdater } from 'electron-updater'
 //import colors from 'vuetify/lib/util/colors';
 
 /**
@@ -107,7 +107,7 @@ function init() {
 
     // 업데이트 처리
     AppUpdater.init(mainWindow);
-    //if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates();
+
     //autoUpdater.checkForUpdates();
 }
 /*autoUpdater.on('update-downloaded', () => {

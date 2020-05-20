@@ -2,7 +2,7 @@
     <b-toast
       id="update-toast"
       variant="secondary"
-      toaster="b-toaster-top-right"
+      toaster="b-toaster-bottom-full"
       append-toast
       no-auto-hide
       :no-close-button="updateToastNoClose"
@@ -111,11 +111,13 @@ export default {
           }, 3000);
           break;
         case "update-available":
+           log.info("update available 1: ",this.visible);
           const releaseName = args.info.version;
           this.updateStateMessage = "서버에서 신규 버전(" + releaseName + ")을 찾았습니다.";
           this.updateStep = 2;
           this.updateToastNoClose = false;
           this.visible = true;
+          log.info("update available 2: ",this.visible);
           break;
         case "download-progress":
           const {bytesPerSecond, percent, total, transferred, delta} = args.progress;

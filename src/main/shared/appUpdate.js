@@ -22,7 +22,7 @@ export default (() => {
 
             this.bindEvents();
 
-            // autoUpdater.checkForUpdates()
+            //autoUpdater.checkForUpdates()
             // autoUpdater.checkForUpdatesAndNotify()
             // autoUpdater.logger.transports.file.level = "info"
         }

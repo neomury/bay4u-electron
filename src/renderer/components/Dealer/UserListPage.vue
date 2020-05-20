@@ -194,7 +194,7 @@
                 <img height='18' v-if="qtReq.CarBrand === 'FORD'" style="align-self:center;width:36px;" src="@/assets/BRAND-FORD.png">
                 <img height='25' v-if="qtReq.CarBrand === 'HONDA'" style="align-self:center;" src="@/assets/BRAND-HONDA.png">
                 <img height='15' v-if="qtReq.CarBrand === 'JEEP'" style="align-self:center;width:36px;" src="@/assets/BRAND-JEEP.png">
-                <img height='12' v-if="qtReq.CarBrand === 'LANDROVER'" style="align-self:center; " src="@/assets/BRAND-LANDROVER.png">
+                <img height='12' v-if="qtReq.CarBrand === 'LANDROVER'" style="align-self:center;width:36px; " src="@/assets/BRAND-LANDROVER.png">
                 <img height='17' v-if="qtReq.CarBrand === 'JAGUAR'" style="align-self:center; " src="@/assets/BRAND-JAGUAR.png">
                 <img height='25' v-if="qtReq.CarBrand === 'LEXUS'" style="align-self:center;" src="@/assets/BRAND-LEXUS.png">
                 <img height='30' v-if="qtReq.CarBrand === 'LINCOLN'" style="align-self:center;margin-left:6px;" src="@/assets/BRAND-LINCOLN.png">

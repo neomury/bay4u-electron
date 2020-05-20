@@ -62,6 +62,7 @@
 <script>
 import Constant from '../Constant';
 import AppUpdateer from '@/components/Common/AppUpdate.vue'
+import { autoUpdater } from 'electron-updater'
 const log = require("electron-log");
 
 const axios = require('axios').default;
@@ -79,9 +80,9 @@ export default {
       preferences: {
         update:{
           autoUpdateUI: true,
-          autoCheck: false,
-          autoDownload: false,
-          autoInstall: false,
+          autoCheck: true,
+          autoDownload: true,
+          autoInstall: true,
         }
       },
     }
@@ -238,6 +239,19 @@ export default {
       else if(type === "SITEADMIN"){
         this.$router.push('/UserInfo');
       }
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      this.preferences.update.autoCheck = true
+      this.preferences.update.autoDownload = true
+      this.preferences.update.autoInstall = true
+      this.preferences.update.autoUpdateUI= true
+    }
+    else{
+      this.preferences.update.autoCheck = false
+      this.preferences.update.autoDownload = false
+      this.preferences.update.autoInstall = false
+      this.preferences.update.autoUpdateUI= true
     }
   }
 }
